@@ -1,0 +1,47 @@
+name: main_workflow
+
+on: 
+  push:
+    branches:
+      - nodejs_linter_job
+
+      jobs:
+        
+        primerjob:
+          name: linter-execution
+          runs-on: ubuntu-latest
+          strategy:
+                matrix:
+                  node-version: [10, 12]
+
+          steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setting nodeversion10
+              uses: actions/setup-node@v2
+              with:
+                node-version: ${{ matrix.node-version }}
+
+            - name: Linter execution
+              uses: eslintrc/github-action@draft
+              env:
+                DEFAULT_BRANCH: nodejs_example
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                LINTER_RULES_PATH: /
+                JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
+                VALIDATE_JAVASCRIPT_ES: true
+
+        segundojob:
+          name: test-execution
+          runs-on: ubuntu-latest
+
+          steps:
+            - name: Checkout code 
+              uses: actions/checkout@v2
+
+            - name: Run jest test
+              run:
+                npm install jest
+                npm install
+                npm test 
