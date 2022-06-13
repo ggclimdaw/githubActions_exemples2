@@ -9,9 +9,8 @@ jobs:
       name: linter-execution
       runs-on: ubuntu-latest
       strategy:
-            matrix:
-              node-version: [10, 12]
-
+        matrix:
+          node-version: [10]
       steps:
         - name: Checkout code
           uses: actions/checkout@v2
